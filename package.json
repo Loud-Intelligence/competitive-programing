@@ -1,0 +1,22 @@
+{
+  "name": "competitive-programming",
+  "version": "1.0.0",
+  "description": "Competitive programming challenges in JavaScript",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "test:watch": "node --test --watch",
+    "new": "node bin/new-challenge.js"
+  },
+  "keywords": [
+    "competitive-programming",
+    "algorithms",
+    "data-structures"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+
