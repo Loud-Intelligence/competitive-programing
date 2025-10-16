@@ -21,14 +21,16 @@
  * @return {any} - Resultado del problema
  */
 export function keepHydrated(time) {
-    // TODO: Implementar solución
-    return null;
-  }
+  const exact = time * 0.5
+
+  const trash = exact % 1
+
+  return exact - trash
+}
   
-  /**
-   * Complejidad:
-   * - Tiempo: O(?)
-   * - Espacio: O(?)
-   */
-  
+/**
+ * Complejidad:
+ * - Tiempo: O(1)
+ * - Espacio: O(1)
+ */
   
