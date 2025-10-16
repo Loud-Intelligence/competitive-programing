@@ -1,6 +1,8 @@
 /**
  * Keep Hydrated!
  * 
+ * https://www.codewars.com/kata/582cb0224e56e068d800003c
+ * 
  * Descripción:
  * Nathan loves cycling.
  * Because Nathan knows it is important to stay hydrated, he drinks 0.5 litres of water per hour of cycling.
