@@ -1,23 +1,52 @@
 name: Run Tests on Push
 
 on:
-    push:
-        branches:
-            - carlos
-            - marcos
+  push:
+    branches:
+      - carlos
+      - marcos
 
 jobs:
-    run-tests:
-        runs-on: ubuntu-latest
+  run-tests:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20
-            - name: Install dependencies
-              run: npm install
-            - name: Run tests
-              run: npm run test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Get changed challenge files
+        id: changed
+        run: |
+          git fetch origin ${{ github.event.before }}
+          CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^challenges/.*\.js$' || true)
+          echo "changed_challenges=$CHANGED" >> $GITHUB_OUTPUT
+
+      - name: Run corresponding tests
+        if: steps.changed.outputs.changed_challenges != ''
+        run: |
+          echo "Detected changed challenge files:"
+          echo "${{ steps.changed.outputs.changed_challenges }}"
+
+          for file in ${{ steps.changed.outputs.changed_challenges }}; do
+            basename=$(basename "$file" .js)
+            testfile="tests/${basename}.test.js"
+
+            if [ -f "$testfile" ]; then
+              echo "Running test for $basename..."
+              node --test "$testfile"
+            else
+              echo "⚠️ No test file found for $basename"
+            fi
+          done
+
+      - name: No challenge files changed
+        if: steps.changed.outputs.changed_challenges == ''
+        run: echo "No challenge files changed — skipping tests."
